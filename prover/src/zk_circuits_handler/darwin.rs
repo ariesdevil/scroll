@@ -4,12 +4,9 @@ use crate::{
     types::{ProverType, TaskType},
 };
 use anyhow::{bail, Context, Ok, Result};
-use once_cell::sync::Lazy;
 use serde::Deserialize;
 
 use crate::types::{CommonHash, Task};
-use std::{cell::RefCell, cmp::Ordering, env, rc::Rc};
-
 use prover_darwin::{
     aggregator::Prover as BatchProver,
     check_chunk_hashes,
@@ -19,9 +16,10 @@ use prover_darwin::{
     BatchProof, BatchProvingTask, BlockTrace, BundleProof, BundleProvingTask, ChunkInfo,
     ChunkProof, ChunkProvingTask,
 };
+use std::{cell::RefCell, cmp::Ordering, env, rc::Rc, sync::LazyLock};
 
 // Only used for debugging.
-static OUTPUT_DIR: Lazy<Option<String>> = Lazy::new(|| env::var("PROVER_OUTPUT_DIR").ok());
+static OUTPUT_DIR: LazyLock<Option<String>> = LazyLock::new(|| env::var("PROVER_OUTPUT_DIR").ok());
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct BatchTaskDetail {

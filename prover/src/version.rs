@@ -1,7 +1,7 @@
-use std::cell::OnceCell;
+use std::sync::OnceLock;
 
 static DEFAULT_COMMIT: &str = "unknown";
-static mut VERSION: OnceCell<String> = OnceCell::new();
+static VERSION: OnceLock<String> = OnceLock::new();
 
 pub const TAG: &str = "v0.0.0";
 pub const DEFAULT_ZK_VERSION: &str = "000000-000000";
@@ -14,5 +14,5 @@ fn init_version() -> String {
 }
 
 pub fn get_version() -> String {
-    unsafe { VERSION.get_or_init(init_version).clone() }
+    VERSION.get_or_init(init_version).clone()
 }
