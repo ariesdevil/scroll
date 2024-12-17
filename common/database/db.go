@@ -19,7 +19,7 @@ type gormLogger struct {
 	gethLogger log.Logger
 }
 
-func (g *gormLogger) LogMode(level logger.LogLevel) logger.Interface {
+func (g *gormLogger) LogMode(logger.LogLevel) logger.Interface {
 	return g
 }
 
